@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="class")
+@DiscriminatorColumn(name="classe")
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

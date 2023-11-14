@@ -7,17 +7,17 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="class")
+@DiscriminatorColumn(name="classe")
 public class Celular {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private long numero;
     @ManyToOne
-    Cliente cliente;
+    private Cliente cliente;
     @ManyToOne
-    Plano plano;
+    private Plano plano;
     @OneToMany
     @JoinColumn(name="celular_id")
-    Set<Ligacao> ligacoes;
+    private Set<Ligacao> ligacoes;
 }
