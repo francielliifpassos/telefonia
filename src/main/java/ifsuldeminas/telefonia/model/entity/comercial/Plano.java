@@ -12,4 +12,28 @@ public class Plano {
     private long id;
     private double valorPorMinuto;
     private String nome;
+
+    public Plano(){
+
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public double getValorPorMinuto() {
+        return valorPorMinuto;
+    }
+
+    public void setValorPorMinuto(double valorPorMinuto) {
+        this.valorPorMinuto = valorPorMinuto;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 }
