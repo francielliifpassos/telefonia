@@ -2,6 +2,7 @@ package ifsuldeminas.telefonia.controller.commercial;
 
 import ifsuldeminas.telefonia.model.entity.comercial.Plano;
 import ifsuldeminas.telefonia.model.repositories.commercial.PlanoRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,12 +27,12 @@ public class PlanoResource {
     }
 
     @PostMapping
-    public Plano create(@RequestBody Plano plano){
+    public Plano create(@RequestBody @Valid Plano plano){
         return planoRepository.save(plano);
     }
 
     @PutMapping("/{id}")
-    public Plano update(@PathVariable Long id, @RequestBody Plano plano){
+    public Plano update(@PathVariable Long id, @RequestBody @Valid Plano plano){
         Plano planoAux = planoRepository.getById(id);
         planoAux.setNome(plano.getNome());
         planoAux.setValorPorMinuto(plano.getValorPorMinuto());
