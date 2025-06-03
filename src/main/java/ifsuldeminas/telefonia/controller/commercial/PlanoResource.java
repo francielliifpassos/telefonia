@@ -3,9 +3,12 @@ package ifsuldeminas.telefonia.controller.commercial;
 import ifsuldeminas.telefonia.model.entity.comercial.Plano;
 import ifsuldeminas.telefonia.model.repositories.commercial.PlanoRepository;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/plano")
@@ -22,8 +25,14 @@ public class PlanoResource {
     }
 
     @GetMapping("/{id}")
-    public Plano get(@PathVariable Long id){
-        return planoRepository.getById(id);
+    public ResponseEntity<Plano> get(@PathVariable Long id){
+        Optional<Plano> optional = planoRepository.findById(id);
+
+        if(!optional.isPresent()){
+            return new ResponseEntity<Plano>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<Plano>(optional.get(), HttpStatus.OK);
     }
 
     @PostMapping
@@ -32,15 +41,26 @@ public class PlanoResource {
     }
 
     @PutMapping("/{id}")
-    public Plano update(@PathVariable Long id, @RequestBody @Valid Plano plano){
-        Plano planoAux = planoRepository.getById(id);
+    public ResponseEntity<Plano> update(@PathVariable Long id, @RequestBody @Valid Plano plano){
+        Optional<Plano> optional = planoRepository.findById(id);
+
+        if(!optional.isPresent()){
+            return new ResponseEntity<Plano>(HttpStatus.NOT_FOUND);
+        }
+
+        Plano planoAux = optional.get();
         planoAux.setNome(plano.getNome());
         planoAux.setValorPorMinuto(plano.getValorPorMinuto());
-        return planoRepository.save(planoAux);
+        return new ResponseEntity<Plano>(planoAux, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public ResponseEntity<Plano> delete(@PathVariable Long id){
+        if(!planoRepository.existsById(id)){
+            return new ResponseEntity<Plano>(HttpStatus.NOT_FOUND);
+        }
+
         planoRepository.deleteById(id);
+        return new ResponseEntity<Plano>(HttpStatus.NO_CONTENT);
     }
 }
