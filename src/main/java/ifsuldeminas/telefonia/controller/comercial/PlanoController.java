@@ -1,5 +1,6 @@
 package ifsuldeminas.telefonia.controller.comercial;
 
+import ifsuldeminas.telefonia.exceptions.comercial.PlanoNotFoundException;
 import ifsuldeminas.telefonia.model.entity.comercial.Plano;
 import ifsuldeminas.telefonia.model.repositories.comercial.PlanoRepository;
 import ifsuldeminas.telefonia.model.services.comercial.PlanoService;
@@ -26,12 +27,13 @@ public class PlanoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Plano> get(@PathVariable Long id){
-        Plano plano = planoService.getById(id);
-        if(plano == null){
-            return new ResponseEntity<Plano>(HttpStatus.NOT_FOUND);
+    public ResponseEntity get(@PathVariable Long id){
+        try {
+            Plano plano = planoService.getById(id);
+            return new ResponseEntity(plano, HttpStatus.OK);
+        } catch(PlanoNotFoundException pnfe){
+            return new ResponseEntity(pnfe.getMessage(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Plano>(plano, HttpStatus.OK);
     }
 
     @PostMapping
@@ -40,21 +42,21 @@ public class PlanoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Plano> update(@PathVariable Long id, @RequestBody @Valid Plano plano){
-        Plano planoAux = planoService.update(id, plano);
-        if(planoAux == null){
-            return new ResponseEntity<Plano>(HttpStatus.NOT_FOUND);
+    public ResponseEntity update(@PathVariable Long id, @RequestBody @Valid Plano plano){
+        try {
+            return new ResponseEntity<Plano>(planoService.update(id, plano), HttpStatus.OK);
+        } catch(PlanoNotFoundException pnfe){
+            return new ResponseEntity(pnfe.getMessage(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Plano>(planoAux, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Plano> delete(@PathVariable Long id){
-        Plano plano = planoService.getById(id);
-        if(plano == null){
-            return new ResponseEntity<Plano>(HttpStatus.NOT_FOUND);
+        try {
+            planoService.delete(id);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(PlanoNotFoundException pnfe){
+            return new ResponseEntity(pnfe.getMessage(), HttpStatus.NOT_FOUND);
         }
-        planoService.delete(plano);
-        return new ResponseEntity<Plano>(HttpStatus.NO_CONTENT);
     }
 }
