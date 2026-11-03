@@ -1,10 +1,19 @@
 package ifsuldeminas.telefonia.model.comercial;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 
+@Entity
 public class Ligacao {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date data;
     private long duracao;
+    @ManyToOne
     private Celular origem;
+    @ManyToOne
     private Celular destino;
 }
