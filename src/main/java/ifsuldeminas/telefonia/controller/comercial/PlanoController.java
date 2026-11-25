@@ -2,6 +2,7 @@ package ifsuldeminas.telefonia.controller.comercial;
 
 import ifsuldeminas.telefonia.model.comercial.Plano;
 import ifsuldeminas.telefonia.model.service.comercial.PlanoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class PlanoController {
 
     //operacao create
     @PostMapping
-    public ResponseEntity create(@RequestBody Plano plano){
+    public ResponseEntity create(@RequestBody @Valid Plano plano){
         //salvar os dados do plano no BD
         //chamar um servico de model que faça isso
         return new ResponseEntity(planoService.save(plano), HttpStatus.CREATED);
@@ -41,7 +42,7 @@ public class PlanoController {
 
     //operacao update
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable Long id, @RequestBody Plano plano){
+    public ResponseEntity update(@PathVariable Long id, @RequestBody @Valid Plano plano){
         return new ResponseEntity(planoService.update(id, plano), HttpStatus.OK);
     }
 
