@@ -1,10 +1,7 @@
 package ifsuldeminas.telefonia.model.comercial;
 
 import ifsuldeminas.telefonia.model.Operadora;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +17,9 @@ public class Plano {
     @NotNull
     @DecimalMin(value="0.99")
     private double valorPorMinuto;
+    @NotNull
+    @ManyToOne
+    private Operadora operadora;
 
     public Plano(){
 
@@ -47,5 +47,13 @@ public class Plano {
 
     public void setValorPorMinuto(double valorPorMinuto) {
         this.valorPorMinuto = valorPorMinuto;
+    }
+
+    public Operadora getOperadora() {
+        return operadora;
+    }
+
+    public void setOperadora(Operadora operadora) {
+        this.operadora = operadora;
     }
 }

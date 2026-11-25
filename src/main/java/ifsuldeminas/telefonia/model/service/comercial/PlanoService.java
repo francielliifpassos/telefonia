@@ -3,6 +3,7 @@ package ifsuldeminas.telefonia.model.service.comercial;
 import ifsuldeminas.telefonia.exceptions.comercial.PlanoNotFoundException;
 import ifsuldeminas.telefonia.model.comercial.Plano;
 import ifsuldeminas.telefonia.model.repository.comercial.PlanoRepository;
+import ifsuldeminas.telefonia.model.service.OperadoraService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,14 +12,18 @@ import java.util.Optional;
 @Service
 public class PlanoService {
     private PlanoRepository planoRepository;
+    private OperadoraService operadoraService;
 
     //delegando ao Spring a instanciacao do objeto
-    public PlanoService(PlanoRepository planoRepository){
+    public PlanoService(PlanoRepository planoRepository,
+                        OperadoraService operadoraService){
         this.planoRepository = planoRepository;
+        this.operadoraService = operadoraService;
     }
 
     //cadastra um Plano
     public Plano save(Plano plano){
+        plano.setOperadora(operadoraService.getById(plano.getOperadora().getId()));
         //salva o plano no BD
         return planoRepository.save(plano);
     }
